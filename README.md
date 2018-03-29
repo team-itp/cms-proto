@@ -35,7 +35,7 @@ PC操作にはあまり馴染みのないユーザーを想定し、アップロ
 ```
 $ git clone https://github.com/team-itp/cms-proto
 $ cd server
-$ docker-compose run
+$ docker-compose up -d
 ```
 
 ## 作業の方法

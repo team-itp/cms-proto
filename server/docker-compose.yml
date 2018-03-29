@@ -1,0 +1,31 @@
+version: "3"
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 80:80
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    environment:
+      - WORDPRESS_DB_HOST=mysql:3306
+      - WORDPRESS_DB_NAME=testdb
+      - WORDPRESS_DB_USER=wp_user
+      - WORDPRESS_DB_PASSWORD=root
+    volumes:
+      - ./themes:/var/www/html/wp-content/themes
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=testdb
+      - MYSQL_USER=wp_user
+      - MYSQL_PASSWORD=root
+    volumes:
+      - ./db-data:/var/lib/mysql
+      - ./db-data:/docker-entrypoint-initdb.d
+volumes:
+  db-data:
+    driver: local
