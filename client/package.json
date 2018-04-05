@@ -4,6 +4,7 @@
   "description": "Media uploader application",
   "scripts": {
     "build": "webpack --config webpack.config.js",
+    "watch": "start /B webpack --watch --config webpack.config.js && electron ./dist/main.js",
     "start": "npm run build && electron ./dist/main.js"
   },
   "author": "team-itp",
