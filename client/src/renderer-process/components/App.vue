@@ -11,45 +11,55 @@
                 <div class="mdl-layout-spacer"></div>
                 <!-- Navigation. We hide it in small screens. -->
                 <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link" href=""><i class="material-icons">list</i></a>
+                    <a class="mdl-navigation__link" href=""><i class="material-icons">view_list</i></a>
                 </nav>
             </div>
         </header>
         <main class="mdl-layout__content">
             <div class="page-content">
-                
+              <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+                  <selectable-card></selectable-card>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+                  <selectable-card></selectable-card>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+                  <selectable-card></selectable-card>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+                  <selectable-card></selectable-card>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+                  <selectable-card></selectable-card>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+                  <selectable-card></selectable-card>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+                  <selectable-card></selectable-card>
+                </div>
+              </div>
             </div>
         </main>
     </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component } from 'vue-property-decorator'
+import SelectableCard from './SelectableCard.vue'
 
-@Component
-export default class HelloDecorator extends Vue {
-  @Prop() name: string = "";
-  @Prop() initialEnthusiasm: number = 0;
-
-  enthusiasm = this.initialEnthusiasm;
-
-  increment() {
-    this.enthusiasm++;
+@Component({
+  components: {
+    SelectableCard
   }
-  decrement() {
-    if (this.enthusiasm > 1) {
-      this.enthusiasm--;
-    }
-  }
-
-  get exclamationMarks(): string {
-    return Array(this.enthusiasm + 1).join("!");
-  }
+})
+export default class App extends Vue {
 }
 </script>
 
 <style>
-.greeting {
-  font-size: 20px;
+.page-content {
+  padding-top: 8px;
 }
 </style>
