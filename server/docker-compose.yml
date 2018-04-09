@@ -1,7 +1,7 @@
 version: "3"
 services:
   wordpress:
-    image: cms:latest
+    build: .
     ports:
       - 80:80
     depends_on:
