@@ -22,7 +22,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import SelectableCard from "./SelectableCard.vue";
+import SelectableCard from "./selectable-card.vue";
 
 interface FileInfo {
   filename: string;

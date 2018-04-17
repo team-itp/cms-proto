@@ -29,8 +29,8 @@
 
 <script lang="ts">
   import { Vue, Component } from "vue-property-decorator";
-  import FileList from "./FileList.vue";
-  import Uploader from "./Uploader.vue";
+  import FileList from "./file-list.vue";
+  import Uploader from "./uploader.vue";
 
   @Component({
     components: {

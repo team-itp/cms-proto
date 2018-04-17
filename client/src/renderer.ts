@@ -1,1 +1,1 @@
-export * from './renderer-process'
+export * from './browser'
