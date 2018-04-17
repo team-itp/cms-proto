@@ -48,6 +48,7 @@
 
     toggleFileListViewMode() {
       this.fileListViewMode = this.fileListViewMode === "list" ? "grid" : "list";
+      this.$forceUpdate()
     }
 
     toggleSelectionMode() {
@@ -68,17 +69,30 @@
     width:0;
   }
 
-  .cms-proto--show-drawer .page-content {
+  .page-content {
     position: absolute;
     left:0;
-    right: 400px;
-  }
-  .cms-proto--show-drawer .cms-proto__drawer {
-    position: fixed;
     right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
+  .cms-proto__drawer {
+    visibility: hidden;
+    position: absolute;
+    right: -400px;
     width: 400px;
     top: 0;
     bottom: 0;
     background-color: #efefef;
+  }
+
+  .cms-proto--show-drawer .page-content {
+    right: 400px;
+  }
+  .cms-proto--show-drawer .cms-proto__drawer {
+    visibility: visible;
+    right: 0;
   }
 </style>
