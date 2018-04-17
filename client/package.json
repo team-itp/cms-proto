@@ -4,7 +4,7 @@
   "description": "Media uploader application",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "watch": "start /B webpack --watch --config webpack.config.js && electron ./dist/main.js",
+    "watch": "webpack --config webpack.config.js && start /B webpack --watch --config webpack.config.js && electron ./dist/main.js",
     "start": "npm run build && electron ./dist/main.js"
   },
   "author": "team-itp",
@@ -13,14 +13,22 @@
     "vue": "^2.5.16",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^6.0.0",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",
+    "@types/jasmine": "^2.8.6",
     "@types/node": "^9.6.2",
     "css-loader": "^0.28.11",
     "electron": "^1.8.4",
     "html-webpack-plugin": "^3.2.0",
+    "jasmine": "^3.1.0",
+    "jasmine-core": "^3.1.0",
+    "karma": "^2.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.1",
+    "karma-typescript": "^3.0.12",
     "ts-loader": "^4.1.0",
     "tslint": "^5.9.1",
     "tslint-config-standard": "^7.0.0",
