@@ -49,18 +49,15 @@ module.exports = function (config) {
       module: {
         rules: [
           {
-            test: /\.tsx?$/,
             enforce: 'pre',
+            test: /\.tsx?$/,
             loader: 'tslint-loader',
             options: {
               typeCheck: true,
               emitErrors: true
             }
           },
-          {
-            test: /\.tsx?$/,
-            loader: 'ts-loader'
-          }
+          { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
         ]
       }
     },

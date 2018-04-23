@@ -1,6 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import App from './browser/App'
 
 ReactDOM.render(
-  <div>Node version: {process.versions.node}</div>,
+  <App />,
   document.getElementsByTagName('body')[0])

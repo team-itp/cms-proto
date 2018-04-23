@@ -1,6 +1,7 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
+        "module": "commonjs",
         "target": "es5",
         "moduleResolution": "node",
         "pretty": true,
@@ -13,5 +14,8 @@
         "skipLibCheck": true,
         "allowJs": true,
         "jsx": "react"
-    }
+    },
+    "include": [
+        "./src/**/*"
+    ]
 }

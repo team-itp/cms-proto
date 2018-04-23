@@ -8,25 +8,24 @@ const commonConfig = {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].js'
     },
+    devtool: "source-map",
+    resolve: {
+        extensions: ['.js', '.ts', '.tsx', '.jsx', '.json']
+    },
     module: {
         rules: [
             {
-                test: /\.ts?$/,
                 enforce: 'pre',
+                test: /\.tsx?$/,
                 loader: 'tslint-loader',
                 options: {
                     typeCheck: true,
                     emitErrors: true
                 }
             },
-            {
-                test: /\.tsx?$/,
-                loader: 'ts-loader'
-            }
+            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
         ]
-    },
-    resolve: {
-        extensions: ['.js', '.ts', '.tsx', '.jsx', '.json']
     }
 }
 
