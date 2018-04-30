@@ -20,13 +20,18 @@ const styles = {
   },
   mediaUploader: {
     position: 'fixed',
-    width: 400
+    top: 64,
+    bottom: 0,
+    left: 0,
+    width: 320,
+    padding: 8,
+    overflowY: 'auto'
   },
   content: {
     position: 'fixed',
     top: 64,
     bottom: 0,
-    left: 408,
+    left: 328,
     right: 0,
     padding: 8,
     overflowY: 'auto'

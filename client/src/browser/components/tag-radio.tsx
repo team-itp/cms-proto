@@ -1,10 +1,12 @@
 import * as React from 'react'
 import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form'
+import Typography from 'material-ui/Typography'
 import Radio, { RadioGroup } from 'material-ui/Radio'
+import ExpansionPanel, { ExpansionPanelSummary, ExpansionPanelDetails } from 'material-ui/ExpansionPanel'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Tag } from '../../common/wp-api'
 
 interface TagRadioProps {
-  style?: React.CSSProperties
   name: string
   displayName: string
   selection: Tag[]
@@ -19,7 +21,11 @@ interface TagRadioState {
 class TagRadio extends React.Component<TagRadioProps, TagRadioState> {
   constructor(props: TagRadioProps) {
     super(props)
-    this.state = {
+    if (props.selection) {
+      this.state = {
+        value: props.selection[0].slug,
+        selected: props.selection[0]
+      }
     }
   }
 
@@ -35,18 +41,25 @@ class TagRadio extends React.Component<TagRadioProps, TagRadioState> {
   }
 
   render() {
-    return <div style={this.props.style}>
-      <FormControl component='fieldset' required={this.props.required}>
-        <FormLabel component='legend'>{this.props.displayName}</FormLabel>
-        <RadioGroup
-          name={this.props.name}
-          value={this.state.value}
-          onChange={this.handleChange}
-        >
-          {this.props.selection.map(v => {
-            return <FormControlLabel value={v.slug} control={<Radio />} label={v.name} />
-          })}
-        </RadioGroup>
+    return <div>
+      <FormControl component='fieldset' required={this.props.required} style={{ width: '100%' }}>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <FormLabel component='legend'>{this.props.displayName}</FormLabel>
+            <Typography style={{ lineHeight: 1, fontSize: '1rem', position: 'absolute', left: '7em' }}>{this.state.selected ? this.state.selected.name : ''}</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <RadioGroup
+              name={this.props.name}
+              value={this.state.value}
+              onChange={this.handleChange}
+            >
+              {this.props.selection.map(v => {
+                return <FormControlLabel value={v.slug} control={<Radio />} label={v.name} />
+              })}
+            </RadioGroup>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </FormControl>
     </div>
   }
