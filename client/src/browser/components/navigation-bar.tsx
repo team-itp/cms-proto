@@ -5,6 +5,7 @@ import Typography from 'material-ui/Typography'
 
 interface NavigationBarProps {
   title: string
+  style?: React.CSSProperties
 }
 
 class NavigationBar extends React.Component<NavigationBarProps> {
@@ -14,13 +15,15 @@ class NavigationBar extends React.Component<NavigationBarProps> {
 
   render() {
     return (
-      <AppBar>
-        <Toolbar>
-          <Typography variant='title' color='inherit'>
-            {this.props.title}
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <div style={this.props.style}>
+        <AppBar position='fixed'>
+          <Toolbar>
+            <Typography variant='title' color='inherit' noWrap>
+              {this.props.title}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </div>
     )
   }
 }
