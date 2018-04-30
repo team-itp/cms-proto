@@ -514,6 +514,7 @@ if ( ! function_exists( 'cd_widgets_init' ) ) {
 	 * @since 1.0.0
 	 **/
 	function cd_widgets_init() {
+        register_widget( 'DMS_SearchWidget' );  // WidgetをWordPressに登録する
 		register_sidebar(
 			array(
 				'name'          => __( 'Sidebar', 'coldbox' ),
@@ -587,7 +588,6 @@ if ( ! function_exists( 'cd_remove_current_post_on_recent_widgets' ) ) {
 	}
 }
 add_filter( 'widget_posts_args', 'cd_remove_current_post_on_recent_widgets', 10, 3 );
-
 
 /*
  * -------------------------------------------------------------------------
@@ -1022,3 +1022,138 @@ if ( ! function_exists( 'cd_is_amp' ) ) {
 	}
 	add_action( 'wp', 'cd_is_amp', 1 );
 }
+
+/*
+ * -------------------------------------------------------------------------
+ *  ITP extends
+ * -------------------------------------------------------------------------
+ */
+class DMS_SearchWidget extends WP_Widget {
+    function __construct() {
+        parent::__construct(
+            'dms_search', // Base ID
+            'Search Widget', // Name
+            array( 'description' => '記事を検索する', ) // Args
+        );
+    }
+    public function widget( $args, $instance ) {
+        echo $args['before_widget'];
+        $keywords = $_GET["keyword"] ?? array();
+        $tags = $instance['tags'] ?? array();
+        ?>
+        <form id="dms-search-widget-form" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+            <ul class="tagchecklist dms-tag-list" role="list">
+                <?php
+                    foreach( $keywords as $keyword ) {
+                        $tag = get_term_by('slug', $keyword, 'post_tag');
+                        $tag_name = $tag->name;
+                ?>
+                        <button id='tag<?php echo $n ?>' class="ntdelbutton dms-tag" type="button">
+                        <li><?php echo $tag_name; ?></li>
+                        <input type="hidden" name="keyword[]" value="<?php echo $keyword; ?>" />
+                        </button>
+                <?php
+                    }
+                ?>
+            </ul>
+            <div class="search-form">
+                <input type="search" class="search-inner dms-search" name="keyword[]" placeholder="<?php esc_attr_e( 'キーワードを入力', 'coldbox' ); ?>" />
+                <button type="submit" class="search-submit dms-search"><i class="icon search"></i></button>
+                <input type="hidden" name="s" />
+            </div>
+            <div>
+        <?php
+
+        $tag_hierarchy = get_option( 'tag_hierarchy' );
+        foreach ($tag_hierarchy as $class1 ) {
+            $checked_slug_list = $_GET[ $class1['id'] ] ?? array();
+            echo ( '<div>' );
+            echo ( '<h3>' . $class1['display'] . '</h3>' );
+            foreach ( $class1['data'] as $class2 ) {
+                $is_checked = in_array( $class2['slug'], $checked_slug_list );
+?>
+                <input type="checkbox" class="search-submit dms-search" id="<?php echo $class2['slug'] ?>" name="<?php echo $class1['id'] ?>[]" value="<?php echo $class2['slug'] ?>" <?php echo $is_checked ? "checked" : "" ?>>
+                <label for="<?php echo $class2['slug'] ?>"><?php echo $class2['display'] ?><br>
+<?php
+            }
+            echo ( '</div>' );
+        }
+?>
+        </form>
+<?php
+
+        $instance['tags'] = $tags;
+        echo $args['after_widget'];
+    }
+
+    public function form( $instance ) {
+    }
+
+    function update($new_instance,  $old_instance) {
+        if( !filter_var( $new_instance['email'], FILTER_VALIDATE_EMAIL ) ) {
+            return false;
+        }
+        return $new_instance;
+    }
+}
+
+function dms_scripts() {
+    wp_enqueue_script( 'jquery-ui-autocomplete' );
+    wp_enqueue_script( 'dms-script', get_theme_file_uri( 'assets/js/dms-scripts' . '.js' ), array( 'jquery' ), CD_VER, true );
+    wp_register_style( 'jquery-ui-styles','http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
+    wp_enqueue_style( 'jquery-ui-styles' );
+    wp_enqueue_style( 'dms-style', get_theme_file_uri( 'assets/css/dms-style' . $css_min . '.css' ), array(), CD_VER );
+}
+add_action( 'wp_enqueue_scripts', 'dms_scripts' );
+
+function filter_by_tags($query) {
+    if( is_admin() || ! $query->is_main_query() ) {
+        return;
+    }
+    if ( $query->is_search() ) {
+        $taxquery = array();
+        $slugs = $_GET['keyword'] ?? array();
+        $and_conditions = array();
+        foreach( $slugs as $slug ) {
+            $and_condition = array(
+                'taxonomy' => 'post_tag',
+                'field'    => 'slug',
+                'terms'    => $slug,
+            );
+            $and_conditions[] = $and_condition;
+        }
+        if ( count( $and_conditions ) > 1 ) {
+            $and_conditions = array( 'relation' => 'AND' ) + $and_conditions;
+        }
+        if ( count( $and_conditions ) > 0 ) {
+            $taxquery[] = $and_conditions;
+        }
+
+        $tag_hierarchy = get_option( 'tag_hierarchy' );
+        foreach ($tag_hierarchy as $class1 ) {
+            $slugs = $_GET[$class1['id']] ?? array();
+            $or_conditions = array();
+            foreach ( $slugs as $slug ) {
+                $or_condition = array(
+                    'taxonomy' => 'post_tag',
+                    'field'    => 'slug',
+                    'terms'    => $slug,
+                );
+                $or_conditions[] = $or_condition;
+            }
+            if ( count( $or_conditions ) > 1 ) {
+                $or_conditions = array( 'relation' => 'OR') + $or_conditions;
+            }
+            if ( count( $or_conditions ) > 0 ) {
+                $taxquery[] = $or_conditions;
+            }
+        }
+        if ( count( $taxquery ) > 1 ) {
+            $taxquery = array( 'relation' => 'AND' ) + $taxquery;
+        }
+        var_dump($taxquery);
+
+        $query->set( 'tax_query', $taxquery);
+    }
+}
+add_action( 'pre_get_posts', 'filter_by_tags' );
