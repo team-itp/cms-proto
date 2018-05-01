@@ -1,6 +1,8 @@
 import * as React from 'react'
+import Button from 'material-ui/Button'
 import { Tag } from '../../common/wp-api'
 import TagRadio from './tag-radio'
+import TagCheckbox from './tag-checkbox'
 
 interface MediaUploaderProps {
   style?: React.CSSProperties
@@ -44,13 +46,16 @@ class MediaUploader extends React.Component<MediaUploaderProps, MediaUploaderSta
           { slug: 'slug2', name: 'リフォーム' }
         ]
       } />
-      <TagRadio name='term' displayName='工事期間' selection={
+      <TagCheckbox displayName='工事期間' selection={
         [
           { slug: 'slug1', name: '2017年度' },
           { slug: 'slug2', name: '2018年度' },
           { slug: 'slug3', name: '2019年度' }
         ]
       } />
+      <Button variant='raised' color='primary'>
+        送信
+      </Button>
     </div>
   }
 }

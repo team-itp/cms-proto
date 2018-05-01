@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form'
-import Typography from 'material-ui/Typography'
 import Radio, { RadioGroup } from 'material-ui/Radio'
 import ExpansionPanel, { ExpansionPanelSummary, ExpansionPanelDetails } from 'material-ui/ExpansionPanel'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Typography from 'material-ui/Typography'
 import { Tag } from '../../common/wp-api'
 
 interface TagRadioProps {
@@ -43,7 +43,7 @@ class TagRadio extends React.Component<TagRadioProps, TagRadioState> {
   render() {
     return <div>
       <FormControl component='fieldset' required={this.props.required} style={{ width: '100%' }}>
-        <ExpansionPanel>
+        <ExpansionPanel defaultExpanded>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <FormLabel component='legend'>{this.props.displayName}</FormLabel>
             <Typography style={{ lineHeight: 1, fontSize: '1rem', position: 'absolute', left: '7em' }}>{this.state.selected ? this.state.selected.name : ''}</Typography>
@@ -52,7 +52,7 @@ class TagRadio extends React.Component<TagRadioProps, TagRadioState> {
             <RadioGroup
               name={this.props.name}
               value={this.state.value}
-              onChange={this.handleChange}
+              onClick={this.handleChange}
             >
               {this.props.selection.map(v => {
                 return <FormControlLabel value={v.slug} control={<Radio />} label={v.name} />
