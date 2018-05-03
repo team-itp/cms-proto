@@ -9,6 +9,7 @@ import { Tag } from '../../common/wp-api'
 interface TagCheckboxProps {
   displayName: string
   selection: Tag[]
+  defaultChecked: Tag[]
   required?: boolean
 }
 
@@ -48,23 +49,23 @@ class TagCheckbox extends React.Component<TagCheckboxProps, TagCheckboxState> {
   }
 
   render() {
-    return <div>
-      <FormControl component='fieldset' required={this.props.required} style={{ width: '100%' }}>
-        <ExpansionPanel defaultExpanded>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <FormLabel component='legend'>{this.props.displayName}</FormLabel>
-            <Typography style={{ lineHeight: 1, fontSize: '1rem', position: 'absolute', left: '7em' }}>{this.state.selectedList ? this.state.selectedList.map(v => v.name).join(', ') : ''}</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+    return (
+      <ExpansionPanel defaultExpanded>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <FormLabel component='label'>{this.props.displayName}</FormLabel>
+          <Typography style={{ lineHeight: 1, fontSize: '1rem', position: 'absolute', left: '7em' }}>{this.state.selectedList ? this.state.selectedList.map(v => v.name).join(', ') : ''}</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <FormControl component='fieldset' required={this.props.required} style={{ width: '100%', margin: 0 }}>
             <FormGroup>
               {this.props.selection.map(v => {
                 return <FormControlLabel value={v.slug} control={<Checkbox onChange={(e) => this.handleCheckChanged(e, v)} />} label={v.name} />
               })}
             </FormGroup>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </FormControl>
-    </div>
+          </FormControl>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    )
   }
 }
 
