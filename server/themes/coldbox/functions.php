@@ -1038,62 +1038,56 @@ class DMS_SearchWidget extends WP_Widget {
     }
     public function widget( $args, $instance ) {
         echo $args['before_widget'];
-        $keywords = $_GET["keyword"] ?? array();
+        $keyword_ids = $_GET["keyword"] ?? array();
         $tags = $instance['tags'] ?? array();
         ?>
         <form id="dms-search-widget-form" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
             <ul class="tagchecklist dms-tag-list" role="list">
                 <?php
-                    foreach( $keywords as $keyword ) {
-                        $tag = get_term_by('slug', $keyword, 'post_tag');
+                    foreach( $keyword_ids as $keyword_id ) {
+                        $tag = get_tag($keyword_id);
                         $tag_name = $tag->name;
                 ?>
-                        <button id='tag<?php echo $n ?>' class="ntdelbutton dms-tag" type="button">
+                        <button id='tag-<?php echo $keyword_id ?>' class="ntdelbutton dms-tag" type="button">
                         <li><?php echo $tag_name; ?></li>
-                        <input type="hidden" name="keyword[]" value="<?php echo $keyword; ?>" />
+                        <input type="hidden" name="keyword[]" value="<?php echo $keyword_id; ?>" />
                         </button>
                 <?php
                     }
                 ?>
             </ul>
             <div class="search-form">
-                <input type="search" class="search-inner dms-search" name="keyword[]" placeholder="<?php esc_attr_e( 'キーワードを入力', 'coldbox' ); ?>" />
-                <button type="submit" class="search-submit dms-search"><i class="icon search"></i></button>
+                <input id="dms-search-input" type="search" class="dms-textbox dms-search" placeholder="<?php esc_attr_e( 'キーワードを入力', 'coldbox' ); ?>" />
+                <input id="dms-search-input-hidden" type="hidden" name="keyword[]" />
                 <input type="hidden" name="s" />
             </div>
             <div>
         <?php
 
-        $tag_hierarchy = get_option( 'tag_hierarchy' );
-        foreach ($tag_hierarchy as $class1 ) {
-            $checked_slug_list = $_GET[ $class1['id'] ] ?? array();
+        $special_tags = get_option( 'special-tag' );
+        foreach ($special_tags as $category ) {
+            $checked_tag_id_list = $_GET[ 'category-' . $category['category_id'] ] ?? array();
             echo ( '<div>' );
-            echo ( '<h3>' . $class1['display'] . '</h3>' );
-            foreach ( $class1['data'] as $class2 ) {
-                $is_checked = in_array( $class2['slug'], $checked_slug_list );
+            echo ( '<h3>' . $category['name'] . '</h3>' );
+            foreach ( $category['tag_ids'] as $tag_id) {
+                $is_checked = in_array( $tag_id, $checked_tag_id_list );
+                $tag = get_tag($tag_id);
 ?>
-                <input type="checkbox" class="search-submit dms-search" id="<?php echo $class2['slug'] ?>" name="<?php echo $class1['id'] ?>[]" value="<?php echo $class2['slug'] ?>" <?php echo $is_checked ? "checked" : "" ?>>
-                <label for="<?php echo $class2['slug'] ?>"><?php echo $class2['display'] ?><br>
+                <input type="checkbox" class="dms-checkbox dms-search" id="tag-<?php echo $tag_id ?>" name="category-<?php echo $category['category_id'] ?>[]" value="<?php echo $tag_id ?>" <?php echo $is_checked ? "checked" : "" ?>>
+                <label for="tag-<?php echo $tag_id ?>"><?php echo $tag->name ?></label><br>
 <?php
             }
-            echo ( '</div>' );
+?>
+            </div>
+<?php
         }
 ?>
         </form>
 <?php
-
-        $instance['tags'] = $tags;
         echo $args['after_widget'];
     }
 
     public function form( $instance ) {
-    }
-
-    function update($new_instance,  $old_instance) {
-        if( !filter_var( $new_instance['email'], FILTER_VALIDATE_EMAIL ) ) {
-            return false;
-        }
-        return $new_instance;
     }
 }
 
@@ -1106,54 +1100,166 @@ function dms_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'dms_scripts' );
 
+function get_dms_taxonomy( $param ) {
+    $taxquery = array();
+    $keyword_tag_ids = $param['keyword'] ?? array();
+    $and_conditions = array();
+    foreach( $keyword_tag_ids as $tag_id ) {
+        $and_condition = array(
+            'taxonomy' => 'post_tag',
+            'field'    => 'id',
+            'terms'    => $tag_id,
+        );
+        $and_conditions[] = $and_condition;
+    }
+    if ( count( $and_conditions ) > 1 ) {
+        $and_conditions = array( 'relation' => 'AND' ) + $and_conditions;
+    }
+    if ( count( $and_conditions ) > 0 ) {
+        $taxquery[] = $and_conditions;
+    }
+
+    $special_tags = get_option( 'special-tag' );
+    foreach ( $special_tags as $category ) {
+        $category_tag_ids = $param[ 'category-' . $category['category_id'] ] ?? array();
+        $or_conditions = array();
+        foreach ( $category_tag_ids as $tag_id ) {
+            $or_condition = array(
+                'taxonomy' => 'post_tag',
+                'field'    => 'id',
+                'terms'    => $tag_id,
+            );
+            $or_conditions[] = $or_condition;
+        }
+        if ( count( $or_conditions ) > 1 ) {
+            $or_conditions = array( 'relation' => 'OR') + $or_conditions;
+        }
+        if ( count( $or_conditions ) > 0 ) {
+            $taxquery[] = $or_conditions;
+        }
+    }
+    if ( count( $taxquery ) > 1 ) {
+        $taxquery = array( 'relation' => 'AND' ) + $taxquery;
+    }
+
+    return $taxquery;
+}
+
 function filter_by_tags($query) {
     if( is_admin() || ! $query->is_main_query() ) {
         return;
     }
     if ( $query->is_search() ) {
-        $taxquery = array();
-        $slugs = $_GET['keyword'] ?? array();
-        $and_conditions = array();
-        foreach( $slugs as $slug ) {
-            $and_condition = array(
-                'taxonomy' => 'post_tag',
-                'field'    => 'slug',
-                'terms'    => $slug,
-            );
-            $and_conditions[] = $and_condition;
-        }
-        if ( count( $and_conditions ) > 1 ) {
-            $and_conditions = array( 'relation' => 'AND' ) + $and_conditions;
-        }
-        if ( count( $and_conditions ) > 0 ) {
-            $taxquery[] = $and_conditions;
-        }
-
-        $tag_hierarchy = get_option( 'tag_hierarchy' );
-        foreach ($tag_hierarchy as $class1 ) {
-            $slugs = $_GET[$class1['id']] ?? array();
-            $or_conditions = array();
-            foreach ( $slugs as $slug ) {
-                $or_condition = array(
-                    'taxonomy' => 'post_tag',
-                    'field'    => 'slug',
-                    'terms'    => $slug,
-                );
-                $or_conditions[] = $or_condition;
-            }
-            if ( count( $or_conditions ) > 1 ) {
-                $or_conditions = array( 'relation' => 'OR') + $or_conditions;
-            }
-            if ( count( $or_conditions ) > 0 ) {
-                $taxquery[] = $or_conditions;
-            }
-        }
-        if ( count( $taxquery ) > 1 ) {
-            $taxquery = array( 'relation' => 'AND' ) + $taxquery;
-        }
-        var_dump($taxquery);
-
+        $taxquery = get_dms_taxonomy( $_GET );
         $query->set( 'tax_query', $taxquery);
     }
 }
 add_action( 'pre_get_posts', 'filter_by_tags' );
+
+add_action( 'rest_api_init', function () {
+    $namespace = 'dms/v1';
+    register_rest_route( $namespace, '/special-tags', array(
+        'methods' => 'GET',
+        'callback' => 'get_special_tags',
+    ) );
+    register_rest_route( $namespace, '/special-tags/(?P<category_id>\d+)', array(
+        'methods' => 'PUT',
+        'callback' => 'put_special_tags',
+        'args' => array(
+            'category_id' => array( 'validate_callback' => 'is_dms_category_id' ),
+            'name'        => array( 'validate_callback' => 'is_dms_name' ),
+            'tag_ids'     => array( 'validate_callback' => 'is_dms_tag_ids' ),
+        ),
+    ) );
+    register_rest_route( $namespace, '/special-tags/(?P<category_id>\d+)', array(
+        'methods' => 'DELETE',
+        'callback' => 'delete_special_tags',
+        'args' => array(
+            'category_id' => array( 'validate_callback' => 'is_dms_category_id' ),
+        ),
+    ) );
+} );
+
+function get_special_tags() {
+    $special_tags = get_option( 'special-tag' );
+    $ret = array();
+    foreach ( $special_tags as $category ) {
+        $ret_tags = array();
+        foreach ( $category['tag_ids'] as $tag_id) {
+            $tag = get_tag($tag_id);
+            $ret_tag = array();
+            $ret_tag['tag_id'] = $tag->term_id;
+            $ret_tag['slug'] = $tag->slug;
+            $ret_tag['name'] = $tag->name;
+            $ret_tags[] = $ret_tag;
+        }
+
+        $ret_category = array();
+        $ret_category['id'] = $category['category_id'];
+        $ret_category['name'] = $category['name'];
+        $ret_category['tags'] = $ret_tags;
+
+        $ret[] = $ret_category;
+    }
+
+    return new WP_REST_Response( $ret, 200 );
+}
+
+function put_special_tags( $data ) {
+    $special_tags = get_option( 'special-tag' ) ?? array();
+
+    // すでにカテゴリIDがあれば上書き更新
+    foreach( $special_tags as &$tag ) {
+        if ( $tag['category_id'] == $data['category_id'] ) {
+            $tag = $data;
+            unset( $tag );
+            update_option( 'special-tag', $special_tags, 'yes' );
+            return new WP_REST_Response( null, 200 );
+        }
+    }
+    unset( $tag );
+
+    // 新しいカテゴリIDなら追加
+    $special_tags[] = $data;
+
+    // カテゴリID順にソートして更新
+    foreach ( $special_tags as $index => $tag ) {
+        $sort[$index] = $tag['tag_id'];
+    }
+    array_multisort( $sort, SORT_ASC, $special_tags );
+    update_option( 'special-tag', $special_tags, 'yes' );
+    return new WP_REST_Response( null, 200 );
+}
+
+function delete_special_tags( $data ) {
+    $special_tags = get_option( 'special-tag' ) ?? array();
+
+    // すでにカテゴリIDがあれば上書き更新
+    foreach( $special_tags as $index => &$tag ) {
+        if ( $tag['category_id'] == $data['category_id'] ) {
+            unset( $special_tags[$index] );
+            update_option( 'special-tag', $special_tags, 'yes' );
+            return new WP_REST_Response( null, 200 );
+        }
+    }
+
+    return new WP_REST_Response( null,  400 );
+}
+
+function is_dms_category_id( $param, $request, $key ) {
+    return is_numeric( $param );
+}
+
+function is_dms_name( $param, $request, $key ) {
+    return is_string( $param );
+}
+
+function is_dms_tag_ids( $param, $request, $key ) {
+    if( !is_array( $param ) ) return false;
+
+    foreach( $param as $unit) {
+        if ( !is_numeric( $unit ) ) return false;
+    }
+
+    return true;
+}

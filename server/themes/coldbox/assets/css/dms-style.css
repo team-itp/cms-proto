@@ -1,3 +1,7 @@
 .dms-tag-list {
     margin-bottom: 5px;
 }
+
+.dms-textbox.dms-search {
+    flex: 1;
+}

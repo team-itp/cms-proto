@@ -1,65 +1,64 @@
 'use strict';
 
-jQuery(function ($) {
-  const $dms_form = $('#dms-search-widget-form');
-  const $dms_tagList = $('.tagchecklist');
-  const $dms_searchInput = $('.search-inner.dms-search');
-  const $dms_searchSubmit = $('.search-submit.dms-search');
+jQuery(function($) {
+    const $dmsForm = $('#dms-search-widget-form');
+    const $dmsSearchInput = $('#dms-search-input');
+    const $dmsSearchInputHidden = $('#dms-search-input-hidden');
+    const $dmsCheckbox = $('.dms-checkbox.dms-search');
 
-  let tags = {};
+    let tags  = {};
+    let posts = {};
 
-  $dms_searchInput.autocomplete({
-      source: (request, response) => {
-          $.ajax({
-              url: '/wp-json/wp/v2/tags',
-              type: 'GET',
-              data: {
-                  'search': request.term
-              }
-          })
-          .done( (data) => {
-              tags = data;
-              const displayNames = data.map( (element) => {
-                  return element.name;
-              });
+    $dmsSearchInput.autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: '/wp-json/wp/v2/tags',
+                type: 'GET',
+                data: {
+                    'search': request.term
+                }
+            })
+            .done( (data) => {
+                tags = data;
+                const names = data.map( (element) => {
+                    return element.name;
+                });
 
-              response(displayNames);
-          })
-          .fail( (data) => {
-              response([]);
-          });
+                response(names);
+            })
+            .fail( (data) => {
+                response([]);
+            });
 
-      }
-  });
+        }
+    });
 
-  $dms_searchInput.change(function () {
-      const filtered = tags.filter( (element) => {
-          return element.name == $dms_searchInput.val();
-      });
-      if (!filtered) { // 該当なし
-          $dms_searchInput.val(null);
-      } else if (filtered.length != 1) {
-          $dms_searchInput.val(null);
-      }
-  });
-
-  $dms_searchSubmit.click(function () {
-      if (!$dms_searchInput.val()) {
-          $dms_searchInput.prop('disabled', true);
-      } else {
-        const filtered = tags.filter( (element) => {
-            return element.name == $dms_searchInput.val();
+    $dmsSearchInput.change(function() {
+        const filtered = tags.filter(function(element) {
+            return element.name === $dmsSearchInput.val();
         });
-        $dms_searchInput.val(filtered[0].slug);
-      }
-      $dms_form.submit();
-  });
+        // タグが取得できない場合は入力を消す
+        if (!filtered || filtered.length != 1) {
+            $dmsSearchInput.val(null);
+            $dmsSearchInputHidden.prop('disabled', true);
+        } else {
+            $dmsSearchInputHidden.val(filtered[0].id);
+        }
+        $dmsForm.submit();
+    });
 
-  $('.dms-tag').click(function () {
-      this.remove();
-      if (!$dms_searchInput.val()) {
-          $dms_searchInput.prop('disabled', true);
-      }
-      $dms_form.submit();
-  });
+    $('.dms-tag').click(function(eventData) {
+        if (!$dmsSearchInput.val()) {
+            $dmsSearchInputHidden.prop('disabled', true);
+        }
+        eventData.currentTarget.remove();
+        $dmsForm.submit();
+    });
+
+    $dmsCheckbox.click(function() {
+        if (!$dmsSearchInput.val()) {
+            $dmsSearchInputHidden.prop('disabled', true);
+        }
+        $dmsForm.submit();
+    });
 });
