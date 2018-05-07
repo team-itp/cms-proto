@@ -3,8 +3,8 @@ import Checkbox from 'material-ui/Checkbox'
 import { FormControl, FormLabel, FormControlLabel, FormGroup } from 'material-ui/Form'
 import ExpansionPanel, { ExpansionPanelSummary, ExpansionPanelDetails } from 'material-ui/ExpansionPanel'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Typography from 'material-ui/Typography'
 import { Tag } from '../../common/wp-api'
+import TagLabel from './tag-label'
 
 interface TagCheckboxProps {
   displayName: string
@@ -53,7 +53,7 @@ class TagCheckbox extends React.Component<TagCheckboxProps, TagCheckboxState> {
       <ExpansionPanel defaultExpanded>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <FormLabel component='label'>{this.props.displayName}</FormLabel>
-          <Typography style={{ lineHeight: 1, fontSize: '1rem', position: 'absolute', left: '7em' }}>{this.state.selectedList ? this.state.selectedList.map(v => v.name).join(', ') : ''}</Typography>
+          <TagLabel tags={this.state.selectedList} />
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <FormControl component='fieldset' required={this.props.required} style={{ width: '100%', margin: 0 }}>
