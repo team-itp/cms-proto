@@ -18,7 +18,7 @@ jQuery(function($) {
                     'search': request.term
                 }
             })
-            .done( (data) => {
+            .done(function(data) {
                 tags = data;
                 const names = data.map( (element) => {
                     return element.name;
@@ -26,10 +26,16 @@ jQuery(function($) {
 
                 response(names);
             })
-            .fail( (data) => {
+            .fail(function(data) {
                 response([]);
             });
 
+        }
+    });
+
+    $dmsForm.submit(function() {
+        if (!$dmsSearchInput.val()) {
+            $dmsSearchInputHidden.prop('disabled', true);
         }
     });
 

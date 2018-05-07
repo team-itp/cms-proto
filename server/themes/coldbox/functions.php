@@ -1064,7 +1064,7 @@ class DMS_SearchWidget extends WP_Widget {
             <div>
         <?php
 
-        $special_tags = get_option( 'special-tag' );
+        $special_tags = get_option( 'special-tag' ) ?? array();
         foreach ($special_tags as $category ) {
             $checked_tag_id_list = $_GET[ 'category-' . $category['category_id'] ] ?? array();
             echo ( '<div>' );

@@ -19,14 +19,6 @@ if ( is_category() ) : ?>
 		</div>
 	<?php endif; ?>
 
-
-<?php elseif ( is_search() ) : ?>
-	<h1><span class="title-description"><?php esc_html_e( 'Search Results for:', 'coldbox' ); ?>&#32;</span><?php the_search_query(); ?></h1>
-	<div class="taxonomy-description">
-		<?php get_search_form(); ?>
-	</div>
-
-
 <?php elseif ( is_day() ) : ?>
 	<?php the_archive_title(); ?>
 
