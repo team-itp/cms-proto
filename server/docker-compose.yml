@@ -18,7 +18,7 @@ services:
       - ./plugins:/var/www/html/wp-content/plugins
       - ./uploads:/var/www/html/wp-content/uploads
   mysql:
-    image: mysql:latest
+    image: mysql:5.7
     ports:
       - 3306:3306
     environment:
@@ -29,7 +29,7 @@ services:
       - MYSQL_PASSWORD=root
     volumes:
       - ./db-data:/var/lib/mysql
-      - ./db-data:/docker-entrypoint-initdb.d
+      - ./db-init:/docker-entrypoint-initdb.d
 volumes:
   db-data:
     driver: local
