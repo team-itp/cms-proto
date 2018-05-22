@@ -3,7 +3,7 @@ import Checkbox from 'material-ui/Checkbox'
 import { FormControl, FormLabel, FormControlLabel, FormGroup } from 'material-ui/Form'
 import ExpansionPanel, { ExpansionPanelSummary, ExpansionPanelDetails } from 'material-ui/ExpansionPanel'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { Tag } from '../../common/wp-api'
+import { Tag } from '../../common'
 import TagLabel from './tag-label'
 
 interface TagCheckboxProps {

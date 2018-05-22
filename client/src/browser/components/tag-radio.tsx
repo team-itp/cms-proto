@@ -3,7 +3,7 @@ import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form'
 import Radio, { RadioGroup } from 'material-ui/Radio'
 import ExpansionPanel, { ExpansionPanelSummary, ExpansionPanelDetails } from 'material-ui/ExpansionPanel'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { Tag } from '../../common/wp-api'
+import { Tag } from '../../common'
 import TagLabel from './tag-label'
 
 interface TagRadioProps {

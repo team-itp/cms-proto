@@ -3,7 +3,7 @@ import Chip from 'material-ui/Chip'
 import { FormControl, FormLabel } from 'material-ui/Form'
 import ExpansionPanel, { ExpansionPanelSummary, ExpansionPanelDetails } from 'material-ui/ExpansionPanel'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { Tag } from '../../common/wp-api'
+import { Tag } from '../../common'
 import TagInputField from './tag-input-field'
 import TagLabel from './tag-label'
 

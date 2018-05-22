@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Button from 'material-ui/Button'
-import { Tag } from '../../common/wp-api'
+import { Tag } from '../../common'
 import TagRadio from './tag-radio'
 import TagCheckbox from './tag-checkbox'
 import TagInput from './tag-input'

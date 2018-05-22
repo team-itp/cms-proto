@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Typography from 'material-ui/Typography'
-import { Tag } from '../../common/wp-api'
+import { Tag } from '../../common'
 
 interface TagLabelProps {
   tags: Tag[]

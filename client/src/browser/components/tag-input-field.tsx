@@ -4,7 +4,7 @@ import Grow from 'material-ui/transitions/Grow'
 import Paper from 'material-ui/Paper'
 import { MenuItem } from 'material-ui/Menu'
 import TextField from 'material-ui/TextField'
-import { Tag } from '../../common/wp-api'
+import { Tag } from '../../common'
 
 const suggestions = [
   { name: 'どこかの現場1', slug: 'docoka1' },
