@@ -1,9 +1,11 @@
-import { app, BrowserWindow, ipcMain, IpcMessageEvent } from 'electron'
+import { app, BrowserWindow, ipcMain as ipc, IpcMessageEvent } from 'electron'
+import api from './main/api'
+import { PostMediaOptions } from './common'
 
 declare var __dirname: string
 let mainWindow: Electron.BrowserWindow
 
-function onReady() {
+app.once('ready', () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600
@@ -12,12 +14,17 @@ function onReady() {
   const fileName = `file://${__dirname}/index.html`
   mainWindow.loadURL(fileName)
   mainWindow.on('close', () => app.quit())
-}
 
-app.on('ready', () => onReady())
-app.on('window-all-closed', () => app.quit())
-console.log(`Electron Version ${app.getVersion()}`)
+  ipc.on('post-media:request', (event: IpcMessageEvent, args: PostMediaOptions) => {
+    api.uploadMedia(args.contentType, args.filepath, (err: any) => {
+      if (err) {
+        event.sender.send('post-media:failed', err)
+      } else {
+        event.sender.send('post-media:completed')
+      }
+    })
+  })
 
-ipcMain.on('send', (event: IpcMessageEvent) => {
-  event.sender.send('send_complete')
 })
+
+app.on('window-all-closed', () => app.quit())

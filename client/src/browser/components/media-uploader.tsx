@@ -1,11 +1,12 @@
 import * as React from 'react'
 import Button from 'material-ui/Button'
+import Paper from 'material-ui/Paper'
+import { ipcRenderer as ipc } from 'electron'
+
 import { Tag } from '../../common'
 import TagRadio from './tag-radio'
 import TagCheckbox from './tag-checkbox'
 import TagInput from './tag-input'
-import Paper from 'material-ui/Paper'
-import { ipcRenderer } from 'electron'
 
 interface MediaUploaderProps {
   style?: React.CSSProperties
@@ -22,14 +23,23 @@ interface MediaUploaderState {
 class MediaUploader extends React.Component<MediaUploaderProps, MediaUploaderState> {
   constructor(props: MediaUploaderProps) {
     super(props)
-    ipcRenderer.on('send_complete', this.handleSendComplete)
+    ipc.on('post-media:completed', this.handleSendComplete)
+    ipc.on('post-media:failed', this.handleSendFailed)
   }
 
   handleSendButtonClick(this: MediaUploader) {
-    ipcRenderer.send('send')
+    ipc.send('post-media:request', {
+      contentType: 'application/pdf',
+      filepath: 'assets/sample1.pdf'
+    })
   }
 
-  handleSendComplete(err: any) {
+  handleSendComplete(event: any) {
+    alert(event)
+  }
+
+  handleSendFailed(event: any, err: any) {
+    alert(event)
     alert(err)
   }
 
