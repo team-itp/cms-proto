@@ -5,6 +5,7 @@ import TagRadio from './tag-radio'
 import TagCheckbox from './tag-checkbox'
 import TagInput from './tag-input'
 import Paper from 'material-ui/Paper'
+import { ipcRenderer } from 'electron'
 
 interface MediaUploaderProps {
   style?: React.CSSProperties
@@ -21,6 +22,15 @@ interface MediaUploaderState {
 class MediaUploader extends React.Component<MediaUploaderProps, MediaUploaderState> {
   constructor(props: MediaUploaderProps) {
     super(props)
+    ipcRenderer.on('send_complete', this.handleSendComplete)
+  }
+
+  handleSendButtonClick(this: MediaUploader) {
+    ipcRenderer.send('send')
+  }
+
+  handleSendComplete(err: any) {
+    alert(err)
   }
 
   render() {
@@ -51,7 +61,7 @@ class MediaUploader extends React.Component<MediaUploaderProps, MediaUploaderSta
       ]} />
       <TagInput displayName='その他' />
       <Paper style={{ position: 'relative', padding: 8, textAlign: 'right' }}>
-        <Button variant='raised' color='primary'>
+        <Button variant='raised' color='primary' onClick={() => this.handleSendButtonClick()}>
           送信
         </Button>
       </Paper>
