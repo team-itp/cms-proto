@@ -1,41 +1,46 @@
-﻿<UserControl x:Class="CmsClient.Views.MediaFileView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" 
-             d:DesignHeight="320" d:DesignWidth="320"
-             VerticalAlignment="Bottom">
+﻿<UserControl
+    x:Class="CmsClient.Views.MediaFileView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    VerticalAlignment="Bottom"
+    d:DesignHeight="320"
+    d:DesignWidth="320"
+    mc:Ignorable="d">
     <Grid x:Name="contentArea">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Image Grid.Row="0"
-               Grid.RowSpan="2" 
-               x:Name="image" 
-               StretchDirection="DownOnly"
-               Stretch="Uniform"
-               HorizontalAlignment="Center"
-               Height="{Binding ElementName=contentArea, Path=ActualHeight}" />
-        <Grid x:Name="tbGrid"  
-              Grid.Row="1"
-              Grid.ColumnSpan="2"
-              Opacity="0.8" 
-              Background="LightGray" 
-              Height="48"
-              Width="{Binding ElementName=contentArea, Path=ActualWidth}">
-            <TextBlock x:Name="title" 
-                       FontSize="18pt" 
-                       Foreground="Black" 
-                       Opacity="1" 
-                       Text="{Binding Path=MediaFile.Name}" 
-                       VerticalAlignment="Center" 
-                       HorizontalAlignment="Left" />
+        <Image
+            x:Name="image"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Height="{Binding ElementName=contentArea, Path=ActualHeight}"
+            HorizontalAlignment="Center"
+            Stretch="Uniform"
+            StretchDirection="DownOnly" />
+        <Grid
+            x:Name="tbGrid"
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Width="{Binding ElementName=contentArea, Path=ActualWidth}"
+            Height="48"
+            Background="LightGray"
+            Opacity="0.8">
+            <TextBlock
+                x:Name="title"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="18pt"
+                Foreground="Black"
+                Opacity="1"
+                Text="{Binding Path=MediaFile.Name}" />
         </Grid>
     </Grid>
 </UserControl>
