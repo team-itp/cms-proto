@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PdfiumViewer;
+using System;
 using System.IO;
 
 namespace CmsClient.Models
 {
-    public class MediaFile
+    public abstract class MediaFile
     {
         public MediaFile(string name, string fullPath)
         {
@@ -15,25 +15,49 @@ namespace CmsClient.Models
         public string Name { get; }
         public string FullPath { get; }
 
-        public override bool Equals(object obj)
+        public static bool IsMediaFile(string path)
         {
-            var file = obj as MediaFile;
-            return file != null &&
-                   Name == file.Name &&
-                   FullPath == file.FullPath;
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = 193482316;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FullPath);
-            return hashCode;
+            var ext = Path.GetExtension(path).ToUpperInvariant();
+            return ext.EndsWith(".PDF") || ext.EndsWith(".PNG") || ext.EndsWith(".JPG");
         }
 
         public static MediaFile Create(string fullPath)
         {
             var name = Path.GetFileName(fullPath);
-            return new MediaFile(name, fullPath);
+            var ext = Path.GetExtension(fullPath).ToUpperInvariant();
+            if (ext.EndsWith(".PDF"))
+            {
+                return new PdfFile(name, fullPath);
+            }
+            return new ImageFile(name, fullPath);
+        }
+    }
+
+    public class PdfFile : MediaFile
+    {
+        public PdfDocument PdfDocument;
+
+        public PdfFile(string name, string fullPath) : base(name, fullPath)
+        {
+            try
+            {
+                using (var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read))
+                {
+                    PdfDocument = PdfDocument.Load(fs);
+                }
+            }
+            catch
+            {
+                GC.Collect();
+                throw;
+            }
+        }
+    }
+
+    public class ImageFile : MediaFile
+    {
+        public ImageFile(string name, string fullPath) : base(name, fullPath)
+        {
         }
     }
 }

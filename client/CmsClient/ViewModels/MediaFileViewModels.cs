@@ -10,10 +10,5 @@ namespace CmsClient.ViewModels
         {
             MediaFile = mediaFile;
         }
-
-        public void Refresh()
-        {
-            MediaFile = MediaFile;
-        }
     }
 }
