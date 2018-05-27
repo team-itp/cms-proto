@@ -11,6 +11,8 @@ namespace CmsClient
     /// </summary>
     public partial class App : Application
     {
+        public InitialSettingWindow InitialWindow { get; set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -32,26 +34,26 @@ namespace CmsClient
                 return;
             }
 
-
             LaunchMain();
         }
 
         private void LaunchInitialWizard()
         {
-            MainWindow = new InitialWindow();
-            MainWindow.DataContext = new InitialSettingViewModel(() => LaunchMain(), () => this.Shutdown());
-            MainWindow.Show();
+            InitialWindow = new InitialSettingWindow();
+            InitialWindow.DataContext = new InitialSettingViewModel(LaunchMain, Shutdown);
+            InitialWindow.Show();
         }
 
         private void LaunchMain()
         {
-            if (MainWindow != null)
-            {
-                MainWindow.Close();
-            }
-
             MainWindow = new MainWindow();
             MainWindow.Show();
+
+            if (InitialWindow != null)
+            {
+                InitialWindow.Close();
+                InitialWindow = null;
+            }
         }
     }
 }

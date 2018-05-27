@@ -27,7 +27,7 @@ namespace CmsClient.ViewModels
         {
             get
             {
-                return string.IsNullOrEmpty(Verify(nameof(PathToWatch)));
+                return !string.IsNullOrEmpty(Verify(nameof(PathToWatch)));
             }
         }
 
@@ -50,6 +50,11 @@ namespace CmsClient.ViewModels
                 default:
                     return null;
             }
+        }
+
+        public bool CanDone()
+        {
+            return !HasError;
         }
 
         public void Done()

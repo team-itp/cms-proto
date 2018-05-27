@@ -98,8 +98,8 @@
     <Compile Include="ViewModels\UploaderViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\FlowControl.cs" />
-    <Compile Include="Views\InitialWindow.xaml.cs">
-      <DependentUpon>InitialWindow.xaml</DependentUpon>
+    <Compile Include="Views\InitialSettingWindow.xaml.cs">
+      <DependentUpon>InitialSettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -110,10 +110,13 @@
     <Compile Include="Views\MediaFileView.xaml.cs">
       <DependentUpon>MediaFileView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SelectWatchDirectoryView.xaml.cs">
+      <DependentUpon>SelectWatchDirectoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UploaderView.xaml.cs">
       <DependentUpon>UploaderView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\InitialWindow.xaml">
+    <Page Include="Views\InitialSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -138,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MediaFileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectWatchDirectoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

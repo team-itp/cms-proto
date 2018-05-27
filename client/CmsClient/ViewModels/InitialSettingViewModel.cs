@@ -39,15 +39,19 @@ namespace CmsClient.ViewModels
 
         private void NavigateTo(ViewModelBase vm)
         {
+            if (CurrentView != null)
+            {
+                _stack.Push(CurrentView);
+            }
             CurrentView = vm;
-            _stack.Push(vm);
         }
 
         private void Back()
         {
-            if (_stack.Count == 1)
+            if (_stack.Count == 0)
             {
                 _canceledCallback.Invoke();
+                return;
             }
             CurrentView = _stack.Pop();
         }
@@ -56,16 +60,19 @@ namespace CmsClient.ViewModels
         {
             Settings.Default.UserId = credential.UserId;
             Settings.Default.PasswordHash = credential.PasswordHash;
+            Settings.Default.Save();
 
             var vm = new SelectWatchDirectoryViewModel(WatchDirectorySelected, Back);
             vm.PathToWatch = Settings.Default.DirectoryToWatch;
             NavigateTo(vm);
-            
+
         }
 
         private void WatchDirectorySelected(string pathToWatch)
         {
             Settings.Default.DirectoryToWatch = pathToWatch;
+            Settings.Default.Save();
+            _completedCallback.Invoke();
         }
     }
 }

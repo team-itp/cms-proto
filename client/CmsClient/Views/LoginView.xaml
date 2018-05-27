@@ -6,8 +6,8 @@
     xmlns:local="clr-namespace:CmsClient.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prop="clr-namespace:CmsClient.Properties"
-    d:DesignHeight="300"
-    d:DesignWidth="300"
+    d:DesignHeight="180" 
+    d:DesignWidth="320"
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
@@ -71,7 +71,6 @@
                 Padding="16,2"
                 Command="{x:Static local:LoginView.LoginCommand}"
                 Content="{x:Static prop:Resources.LOGIN}" />
-
         </Grid>
     </Grid>
 </UserControl>

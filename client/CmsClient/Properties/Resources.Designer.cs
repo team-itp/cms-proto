@@ -79,6 +79,15 @@ namespace CmsClient.Properties {
         }
         
         /// <summary>
+        ///   完了 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DONE {
+            get {
+                return ResourceManager.GetString("DONE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   終了 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string EXIT {
@@ -93,6 +102,15 @@ namespace CmsClient.Properties {
         public static string LOGIN {
             get {
                 return ResourceManager.GetString("LOGIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ... に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string OPEN_FOLDER {
+            get {
+                return ResourceManager.GetString("OPEN_FOLDER", resourceCulture);
             }
         }
         

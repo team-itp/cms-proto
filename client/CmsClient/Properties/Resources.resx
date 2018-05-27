@@ -123,11 +123,17 @@
   <data name="DOCUMENT_FOLDER" xml:space="preserve">
     <value>文書フォルダ</value>
   </data>
+  <data name="DONE" xml:space="preserve">
+    <value>完了</value>
+  </data>
   <data name="EXIT" xml:space="preserve">
     <value>終了</value>
   </data>
   <data name="LOGIN" xml:space="preserve">
     <value>ログイン</value>
+  </data>
+  <data name="OPEN_FOLDER" xml:space="preserve">
+    <value>...</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
     <value>パスワード</value>
