@@ -1,28 +1,25 @@
-﻿using System;
+﻿using CmsClient.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CmsClient.Views
 {
     /// <summary>
     /// TagListView.xaml の相互作用ロジック
     /// </summary>
-    public partial class TagListView : UserControl
+    public partial class TagListView : ItemsControl
     {
         public TagListView()
         {
             InitializeComponent();
+        }
+
+        private void Chip_DeleteClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var chip = sender as MaterialDesignThemes.Wpf.Chip;
+            var tag = chip.DataContext as Tag;
+            var collection = ItemsSource as ICollection<Tag>;
+            collection.Remove(tag);
         }
     }
 }

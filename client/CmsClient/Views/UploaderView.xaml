@@ -13,6 +13,10 @@
         <StackPanel.Resources>
             <Style TargetType="ComboBox">
                 <Setter Property="Margin" Value="5" />
+                <Setter Property="Padding" Value="4" />
+            </Style>
+            <Style TargetType="local:TagListView">
+                <Setter Property="Margin" Value="5" />
             </Style>
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="5" />
@@ -20,7 +24,7 @@
             </Style>
         </StackPanel.Resources>
         <ComboBox x:Name="TagCombo" ItemsSource="{Binding TagChoices}" IsEditable="True" IsReadOnly="False" KeyDown="TagCombo_KeyDown" SelectionChanged="TagCombo_SelectionChanged" DisplayMemberPath="Name" />
-        <local:TagListView DataContext="{Binding SelectedTags}"/>
+        <local:TagListView ItemsSource="{Binding SelectedTags}"/>
         <Button HorizontalAlignment="Right" Content="{x:Static prop:Resources.UPLOAD}"  Command="{x:Static local:UploaderView.UploadCommand}" />
     </StackPanel>
 </UserControl>

@@ -17,7 +17,14 @@
             SelectionChanged="flow_SelectionChanged">
             <local:FlowControl.ItemTemplate>
                 <DataTemplate>
-                    <local:MediaFileView Width="{Binding ElementName=flow, Path=ActualWidth}" Height="280" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" />
+                        <local:MediaFileView Grid.Column="1" Width="{Binding ElementName=flow, Path=ActualWidth}" Height="200" />
+                    </Grid>
                 </DataTemplate>
             </local:FlowControl.ItemTemplate>
         </local:FlowControl>

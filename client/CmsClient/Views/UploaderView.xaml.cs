@@ -56,7 +56,7 @@ namespace CmsClient.Views
                     tag = new Tag(TagCombo.Text);
                     TagCombo.Text = string.Empty;
                 }
-                if (tag != null)
+                if (tag != null && !vm.SelectedTags.Contains(tag))
                 {
                     vm.SelectedTags.Add(tag);
                 }
@@ -76,7 +76,7 @@ namespace CmsClient.Views
                         tag = new Tag(TagCombo.Text);
                         TagCombo.Text = string.Empty;
                     }
-                    if (tag != null)
+                    if (tag != null && !vm.SelectedTags.Contains(tag))
                     {
                         vm.SelectedTags.Add(tag);
                     }
@@ -94,7 +94,7 @@ namespace CmsClient.Views
                     foreach (var item in e.AddedItems)
                     {
                         var tag = item as Tag;
-                        if (tag != null)
+                        if (tag != null && !vm.SelectedTags.Contains(tag))
                         {
                             vm.SelectedTags.Add(tag);
                         }
