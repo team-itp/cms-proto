@@ -16,6 +16,8 @@ namespace CmsClient.ViewModels
 
         public MediaFilesCollection SelectedMediaFiles { get; }
 
+        public TagsCollection ProjectChoices { get; set; }
+        public Tag Project { get; set; }
         public TagsCollection TagChoices { get; set; }
         public TagsCollection SelectedTags { get; set; }
 
@@ -25,11 +27,15 @@ namespace CmsClient.ViewModels
         {
             SelectedMediaFiles = new MediaFilesCollection();
             SelectedTags = new TagsCollection();
-            TagChoices = new TagsCollection();
+            ProjectChoices = new TagsCollection();
+            ProjectChoices.Add(new Tag("案件1"));
+            ProjectChoices.Add(new Tag("案件2"));
+            ProjectChoices.Add(new Tag("案件3"));
 
-            TagChoices.Add(new Tag("案件1"));
-            TagChoices.Add(new Tag("案件2"));
-            TagChoices.Add(new Tag("案件3"));
+            TagChoices = new TagsCollection();
+            TagChoices.Add(new Tag("フリーのタグ1"));
+            TagChoices.Add(new Tag("フリーのタグ2"));
+            TagChoices.Add(new Tag("フリーのタグ3"));
         }
 
         public void SelectFile(MediaFile file)

@@ -136,8 +136,15 @@ namespace CmsClient.ViewModels
                 {
                     if (CanLockFile(newFilePath))
                     {
-                        await DeleteFileAsync(oldFilePath);
-                        _context.Post(state => Files.Add(new MediaFileViewModel(MediaFile.Create(newFilePath))), null);
+                        _context.Post(state =>
+                        {
+                            var fileDeleted = Files.Where(f => f.MediaFile.FullPath == oldFilePath).ToList();
+                            fileDeleted.ForEach(mf =>
+                            {
+                                Files.Remove(mf);
+                            });
+                            Files.Add(new MediaFileViewModel(MediaFile.Create(newFilePath)));
+                        }, null);
                         return;
                     }
                     else

@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CmsClient.Views"
-    xmlns:prop="clr-namespace:CmsClient.Properties"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prop="clr-namespace:CmsClient.Properties"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
@@ -20,11 +20,29 @@
             </Style>
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="5" />
-                <Setter Property="Padding" Value="16, 4" />
+                <Setter Property="Padding" Value="16,4" />
             </Style>
+
         </StackPanel.Resources>
-        <ComboBox x:Name="TagCombo" ItemsSource="{Binding TagChoices}" IsEditable="True" IsReadOnly="False" KeyDown="TagCombo_KeyDown" SelectionChanged="TagCombo_SelectionChanged" DisplayMemberPath="Name" />
-        <local:TagListView ItemsSource="{Binding SelectedTags}"/>
-        <Button HorizontalAlignment="Right" Content="{x:Static prop:Resources.UPLOAD}"  Command="{x:Static local:UploaderView.UploadCommand}" />
+        <ComboBox
+            x:Name="ProjectCombo"
+            DisplayMemberPath="Name"
+            IsEditable="True"
+            IsReadOnly="False"
+            ItemsSource="{Binding ProjectChoices}"
+            SelectedItem="{Binding Project}" />
+        <ComboBox
+            x:Name="TagCombo"
+            DisplayMemberPath="Name"
+            IsEditable="True"
+            IsReadOnly="False"
+            ItemsSource="{Binding TagChoices}"
+            KeyDown="TagCombo_KeyDown"
+            SelectionChanged="TagCombo_SelectionChanged" />
+        <local:TagListView DataContext="{Binding SelectedTags}" />
+        <Button
+            HorizontalAlignment="Right"
+            Command="{x:Static local:UploaderView.UploadCommand}"
+            Content="{x:Static prop:Resources.UPLOAD}" />
     </StackPanel>
 </UserControl>

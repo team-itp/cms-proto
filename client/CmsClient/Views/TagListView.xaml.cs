@@ -7,7 +7,7 @@ namespace CmsClient.Views
     /// <summary>
     /// TagListView.xaml の相互作用ロジック
     /// </summary>
-    public partial class TagListView : ItemsControl
+    public partial class TagListView : UserControl
     {
         public TagListView()
         {
@@ -18,7 +18,7 @@ namespace CmsClient.Views
         {
             var chip = sender as MaterialDesignThemes.Wpf.Chip;
             var tag = chip.DataContext as Tag;
-            var collection = ItemsSource as ICollection<Tag>;
+            var collection = DataContext as ICollection<Tag>;
             collection.Remove(tag);
         }
     }
