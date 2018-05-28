@@ -147,6 +147,9 @@
   <data name="SELECT_PATH_TO_WATCH" xml:space="preserve">
     <value>監視対象の文書フォルダを選択してください。</value>
   </data>
+  <data name="UPLOAD" xml:space="preserve">
+    <value>送信</value>
+  </data>
   <data name="USER_ID" xml:space="preserve">
     <value>ユーザーID</value>
   </data>

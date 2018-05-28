@@ -19,7 +19,7 @@ namespace CmsClient.Models
         public IEnumerable<Tag> TagChoices { get; set; }
     }
 
-    public class Tag : IEquatable<Tag>
+    public class Tag
     {
         public int Id { get; set; }
         public int TermId { get; set; }
@@ -38,20 +38,9 @@ namespace CmsClient.Models
             Name = name;
         }
 
-        public override bool Equals(object obj)
+        public void UpdateId(int newId)
         {
-            return Equals(obj as Tag);
-        }
-
-        public bool Equals(Tag other)
-        {
-            return other != null &&
-                   Slug == other.Slug;
-        }
-
-        public override int GetHashCode()
-        {
-            return 539060726 + EqualityComparer<string>.Default.GetHashCode(Slug);
+            Id = newId;
         }
     }
 }

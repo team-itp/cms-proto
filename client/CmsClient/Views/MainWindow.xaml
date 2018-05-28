@@ -15,7 +15,9 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" />
+
+        <local:UploaderView DataContext="{Binding Uploader}" Grid.Column="0" />
+        <local:MediaFileListView DataContext="{Binding MediaFileList}" Grid.Column="2" />
         <GridSplitter
             Grid.Column="1"
             Width="3"
@@ -24,6 +26,5 @@
             Background="LightGray"
             ResizeDirection="Columns"
             ShowsPreview="True" />
-        <local:MediaFileListView DataContext="{Binding MediaFileList}" Grid.Column="2" />
     </Grid>
 </Window>

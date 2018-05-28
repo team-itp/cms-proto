@@ -151,6 +151,15 @@ namespace CmsClient.Properties {
         }
         
         /// <summary>
+        ///   送信 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string UPLOAD {
+            get {
+                return ResourceManager.GetString("UPLOAD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   ユーザーID に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string USER_ID {

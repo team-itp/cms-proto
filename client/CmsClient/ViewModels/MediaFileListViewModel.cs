@@ -14,6 +14,7 @@ namespace CmsClient.ViewModels
         public class FileList : ObservableCollection<MediaFileViewModel> { }
 
         public FileList Files { get; }
+        public FileList SelectedFiles { get; }
 
         public bool IsWatching { get; private set; }
         public Task WatchTask { get; private set; }
@@ -35,6 +36,7 @@ namespace CmsClient.ViewModels
             _watcher.Error += new ErrorEventHandler(_watcher_Error);
 
             Files = new FileList();
+            SelectedFiles = new FileList();
         }
 
         public static bool IsMediaFile(string path)

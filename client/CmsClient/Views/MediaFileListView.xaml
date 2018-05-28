@@ -13,7 +13,8 @@
             x:Name="flow"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
-            ItemsSource="{Binding Files}">
+            ItemsSource="{Binding Files}"
+            SelectionChanged="flow_SelectionChanged">
             <local:FlowControl.ItemTemplate>
                 <DataTemplate>
                     <local:MediaFileView Width="{Binding ElementName=flow, Path=ActualWidth}" Height="280" />
