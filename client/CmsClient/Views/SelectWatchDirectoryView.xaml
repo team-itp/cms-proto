@@ -26,9 +26,14 @@
             </StackPanel.Resources>
             <Label Content="{x:Static prop:Resources.DOCUMENT_FOLDER}" />
             <TextBox Text="{Binding PathToWatch}" Width="200" VerticalContentAlignment="Center" />
-            <Button Content="{x:Static prop:Resources.OPEN_FOLDER}" />
+            <Button Content="{x:Static prop:Resources.OPEN_FOLDER}" Click="folder_Click" />
         </StackPanel>
         <Grid Grid.Row="2" Grid.ColumnSpan="2">
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="5,5,5,5" />
+                </Style>
+            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />

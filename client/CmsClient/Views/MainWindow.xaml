@@ -24,6 +24,6 @@
             Background="LightGray"
             ResizeDirection="Columns"
             ShowsPreview="True" />
-        <local:MediaFileListView x:Name="fileList" Grid.Column="2" />
+        <local:MediaFileListView DataContext="{Binding MediaFileList}" Grid.Column="2" />
     </Grid>
 </Window>

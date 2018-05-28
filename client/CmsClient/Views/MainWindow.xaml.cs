@@ -11,9 +11,6 @@ namespace CmsClient.Views
         public MainWindow()
         {
             InitializeComponent();
-            var filesListVM = new MediaFileListViewModel("C:\\Temp\\Images");
-            filesListVM.Startwatch();
-            fileList.DataContext = filesListVM;
         }
     }
 }

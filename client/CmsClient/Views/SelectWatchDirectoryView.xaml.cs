@@ -1,18 +1,7 @@
 ﻿using CmsClient.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CmsClient.Views
 {
@@ -55,6 +44,26 @@ namespace CmsClient.Views
             if (vm != null)
             {
                 vm.Cancel();
+            }
+        }
+
+        private void folder_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as SelectWatchDirectoryViewModel;
+            if (vm == null)
+            {
+                return;
+            }
+
+            var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            if (!string.IsNullOrWhiteSpace(vm.PathToWatch))
+            {
+                folderBrowserDialog.SelectedPath = vm.PathToWatch;
+            }
+            var ret = folderBrowserDialog.ShowDialog();
+            if (ret == System.Windows.Forms.DialogResult.OK)
+            {
+                vm.PathToWatch = folderBrowserDialog.SelectedPath;
             }
         }
     }

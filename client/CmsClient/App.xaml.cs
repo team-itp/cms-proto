@@ -47,6 +47,7 @@ namespace CmsClient
         private void LaunchMain()
         {
             MainWindow = new MainWindow();
+            MainWindow.DataContext = new MainWindowViewModel();
             MainWindow.Show();
 
             if (InitialWindow != null)
